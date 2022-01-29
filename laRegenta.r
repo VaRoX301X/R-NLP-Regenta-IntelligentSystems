@@ -26,3 +26,23 @@ lRegenta <- lines[42:34292]
 length(lRegenta) # text without pre-prologue and post-ending
 head(lRegenta)
 tail(lRegenta)
+
+
+# Clean data
+lRegenta
+lRegenta <- gsub("\\r", " ", lRegenta) # remove CR (Carriage Return)
+head(lRegenta)
+lRegenta <- gsub("\\s\\s", " ", lRegenta) # remove double spaces
+head(lRegenta)
+lRegenta <- gsub("\\n", " ", lRegenta) # remove new lines
+head(lRegenta)
+lRegenta <- gsub("\\s\\.", "\\.", lRegenta) # go from 'something .' to 'something.'
+head(lRegenta)
+lRegenta <- gsub("\\_", "", lRegenta) # italized
+head(lRegenta)
+lRegenta <- gsub("D\\.", "Doctor ", lRegenta) # D. to Doctor
+lRegenta <- gsub("B\\.", "Benito", lRegenta) # B. to Benito
+head(lRegenta)
+lRegenta <- gsub("\\-\\-([A-Z]+)\\-\\-", "Capitulo \\1\\.", lRegenta) # Change chapters to have dot.
+lRegenta <- gsub("(Tomo [A-Z]+)", "\\1.", lRegenta) # Change chapters to have dot.
+lRegenta
