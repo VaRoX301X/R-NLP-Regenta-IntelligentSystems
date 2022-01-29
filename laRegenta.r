@@ -46,7 +46,7 @@ head(lRegenta)
 lRegenta <- gsub("\\-\\-([A-Z]+)\\-\\-", "Capitulo \\1\\.", lRegenta) # Change chapters to have dot.
 lRegenta <- gsub("(Tomo [A-Z]+)", "\\1.", lRegenta) # Change chapters to have dot.
 lRegenta
-lRegenta <- gsub("\\d\\K\\.(?=\\d)", "", texto, perl = TRUE)#  Remove dots in thousands
+lRegenta <- gsub("\\d\\K\\.(?=\\d)", "", lRegenta, perl = TRUE)#  Remove dots in thousands
 
 # Convert to 1 string
 texto <- paste(lRegenta, collapse = ' ')
@@ -117,10 +117,31 @@ df_groupedWords <- review_words %>% group_by(word) %>% count(word) %>%
   group_by(word) %>% mutate(frequency = n/dim(review_words)[1])
 
 
-# Generamos el wordcloud
+# Generate wordcloud
 wordcloud(words = df_groupedWords$word, freq = df_groupedWords$frequency,
           max.words = 400, random.order = FALSE, rot.per = 0.35,
           colors = brewer.pal(8, "Dark2"))
 
+
+# 1.2. Bigrams
+# Pair of words
+review_bigrams <- df_id %>%
+  unnest_tokens(bigram, sentence, token = "ngrams", n = 2) # split into two
+
+bigrams_separated <- review_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ") # split words of bigrams
+
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% lexicon$word) %>%
+  filter(!word2 %in% lexicon$word) # remove stopwords
+
+bigram_counts <- bigrams_filtered %>% 
+  dplyr::count(word1, word2, sort = TRUE) # count bigrams
+
+bigrams_united <- bigrams_filtered %>%
+  unite(bigram, word1, word2, sep = " ") # count bigrams cleaning
+
+bigrams_united %>%
+  dplyr::count(bigram, sort = TRUE)
 
 
