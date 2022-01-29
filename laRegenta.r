@@ -46,6 +46,7 @@ head(lRegenta)
 lRegenta <- gsub("\\-\\-([A-Z]+)\\-\\-", "Capitulo \\1\\.", lRegenta) # Change chapters to have dot.
 lRegenta <- gsub("(Tomo [A-Z]+)", "\\1.", lRegenta) # Change chapters to have dot.
 lRegenta
+lRegenta <- gsub("\\d\\K\\.(?=\\d)", "", texto, perl = TRUE)#  Remove dots in thousands
 
 # Convert to 1 string
 texto <- paste(lRegenta, collapse = ' ')
