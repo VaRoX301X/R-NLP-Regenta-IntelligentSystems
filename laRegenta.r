@@ -108,7 +108,18 @@ word_counts %>%
        x = "Word",
        y = "Times")
 
+# WordCloud
+library(wordcloud)
+library(RColorBrewer)
 
+df_groupedWords <- review_words %>% group_by(word) %>% count(word) %>%  
+  group_by(word) %>% mutate(frequency = n/dim(review_words)[1])
+
+
+# Generamos el wordcloud
+wordcloud(words = df_groupedWords$word, freq = df_groupedWords$frequency,
+          max.words = 400, random.order = FALSE, rot.per = 0.35,
+          colors = brewer.pal(8, "Paired"))
 
 
 
