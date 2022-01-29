@@ -91,3 +91,24 @@ review_words <- df_id %>%
   group_by(word) %>% # Group By word
   dplyr::mutate(word_total = n()) %>%
   ungroup()
+
+# Count words
+word_counts <- review_words %>%
+  dplyr::count(word, sort = TRUE)
+
+word_counts %>%
+  head(40) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col(fill = "green") +
+  scale_y_continuous(labels = comma_format()) +
+  coord_flip() +
+  labs(title = paste0("Most used words"),
+       subtitle = "Removed Stopwords",
+       x = "Word",
+       y = "Times")
+
+
+
+
+
