@@ -145,3 +145,12 @@ bigrams_united %>%
   dplyr::count(bigram, sort = TRUE)
 
 
+# PLOT BIGRAMS
+bigrams_plot <- df_id %>% 
+  unnest_tokens(word, sentece) %>% 
+  anti_join(lexicon)
+my_stopwords <- data_frame(word = c(as.character(1:10)))
+review_subject <- review_subject %>% 
+  anti_join(my_stopwords)
+title_word_pairs <- review_subject %>% 
+  pairwise_count(word, ID, sort = TRUE, upper = FALSE)
