@@ -69,3 +69,11 @@ df_regenta$sentence <- trimws(df_regenta$sentence, "l")
 
 #Convert to character
 df_regenta$sentence <- as.character(df_regenta$sentence)
+
+
+# Create lexicon with stopwords
+lexicon <- stopwords("es")
+lexicon <- append(lexicon, c("capitulo", "tomo", " "))
+lexicon <- as.data.frame(lexicon)
+colnames(lexicon) <- c("word")
+lexicon$word <- as.character(lexicon$word)
