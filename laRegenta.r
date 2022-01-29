@@ -119,7 +119,7 @@ df_groupedWords <- review_words %>% group_by(word) %>% count(word) %>%
 # Generamos el wordcloud
 wordcloud(words = df_groupedWords$word, freq = df_groupedWords$frequency,
           max.words = 400, random.order = FALSE, rot.per = 0.35,
-          colors = brewer.pal(8, "Paired"))
+          colors = brewer.pal(8, "Dark2"))
 
 
 
