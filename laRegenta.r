@@ -50,3 +50,15 @@ lRegenta
 # Convert to 1 string
 texto <- paste(lRegenta, collapse = ' ')
 length(texto)
+
+# Function for splitting into sentences
+vector <- c()
+for (i in 1:length(texto)) {
+  temp<-(strsplit(texto[[i]], "\\.")[[1]])
+  print(temp)
+  vector <- c(vector,temp)
+}
+
+# Transform vector to dataframe
+df_regenta <- as.data.frame(vector)
+
