@@ -62,3 +62,10 @@ for (i in 1:length(texto)) {
 # Transform vector to dataframe
 df_regenta <- as.data.frame(vector)
 
+olnames(df_regenta)[1] <- "sentence"
+
+# Remove additional spaces on the left
+df_regenta$sentence <- trimws(df_regenta$sentence, "l")
+
+#Convert to character
+df_regenta$sentence <- as.character(df_regenta$sentence)
