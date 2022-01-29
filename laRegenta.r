@@ -77,3 +77,17 @@ lexicon <- append(lexicon, c("capitulo", "tomo", " "))
 lexicon <- as.data.frame(lexicon)
 colnames(lexicon) <- c("word")
 lexicon$word <- as.character(lexicon$word)
+
+
+# Assign ID to each sentence
+df_id <- tibble::rowid_to_column(df_regenta, "ID")
+
+
+review_words <- df_id %>%
+  distinct(sentence, .keep_all = TRUE) %>% # remove repeated sentences
+  unnest_tokens(word, sentence, drop = FALSE) %>%
+  distinct(ID, word, .keep_all = TRUE) %>%
+  anti_join(lexicon) %>% # dont use lexicon words
+  group_by(word) %>% # Group By word
+  dplyr::mutate(word_total = n()) %>%
+  ungroup()
