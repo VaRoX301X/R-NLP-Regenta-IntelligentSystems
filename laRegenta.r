@@ -1,0 +1,17 @@
+
+library(tokenizers.bpe)
+library(dplyr)
+library(stopwords)
+library(tidytext)
+library(stringi)
+library(stringr)
+library(ggplot2)
+library(scales)
+library(tidyr)
+library(widyr)
+library(ggraph)
+library(igraph)
+library(quanteda)
+library(topicmodels)
+library(cvTools)
+
