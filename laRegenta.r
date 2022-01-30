@@ -147,10 +147,81 @@ bigrams_united %>%
 
 # PLOT BIGRAMS
 bigrams_plot <- df_id %>% 
-  unnest_tokens(word, sentece) %>% 
+  unnest_tokens(word, sentence) %>% 
   anti_join(lexicon)
-my_stopwords <- data_frame(word = c(as.character(1:10)))
-review_subject <- review_subject %>% 
+my_stopwords <- tibble(word = c(as.character(1:10)))
+bigrams_plot <- bigrams_plot %>% 
   anti_join(my_stopwords)
-title_word_pairs <- review_subject %>% 
+title_word_pairs <- bigrams_plot %>% 
   pairwise_count(word, ID, sort = TRUE, upper = FALSE)
+
+bigramsList<-title_word_pairs[which(title_word_pairs$n>100),]
+set.seed(1234)
+title_word_pairs %>%
+  filter(n >= 75) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "cyan4") +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, 
+                 point.padding = unit(0.2, "lines")) +
+  ggtitle('Bigrams')
+
+
+#Sentiment
+library("syuzhet")
+library("tm")
+
+# split by words the text that is a huge string
+text_words <- get_tokens(texto)
+
+length(text_words) #308.304 words
+
+text_sentences <- get_sentences(texto)
+
+length(text_sentences)
+# sentiment_vector uses sentences
+sentiment_vector <- get_sentiment(text_sentences)
+
+plot(
+  sentiment_vector, 
+  type="l", 
+  main="Plot Trajectory", 
+  xlab = "Narrative Time", 
+  ylab= "Emotional Valence"
+)
+
+percent_vals <- get_percentage_values(sentiment_vector, bins = 15)
+plot(
+  percent_vals, 
+  type="l", 
+  main="Percentage-Based", 
+  xlab = "Narrative Time", 
+  ylab= "Emotional Valence", 
+  col="purple"
+)
+
+# Real sentiments
+df_sentiments <- get_nrc_sentiment(text_words, lang="spanish") # 40 minutes 
+
+head(df_sentiments, 100)
+
+summary(df_sentiments)
+
+barplot(
+  colSums(prop.table(df_sentiments[, 1:8])),
+  space = 0.2,
+  horiz = FALSE,
+  las = 1,
+  cex.names = 0.7,
+  col = brewer.pal(n = 8, name = "Set3"),
+  main = "'La Regenta' de Benito Pérez Galdós",
+  xlab="Sentiments", ylab = NULL)
+
+barplot(colSums(prop.table(df_sentiments[, 1:8])))
+
+sentiments_plot <- (df_sentiments$negative *-1) + df_sentiments$positive
+
+simple_plot(sentiments_plot)
+
+
