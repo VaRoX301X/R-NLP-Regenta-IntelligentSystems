@@ -1,6 +1,6 @@
 # Álvaro Recalde Alguacil - Intelligent Systems - MUII
 
-# R-NLP-Regenta-IntelligentSystems
+## How to run the code
 
 In order to run the code, just keep executing the lines of code and thats it, additionally, it would be wise to first install the following packages to achieve a flawlessly run of code. 
 
